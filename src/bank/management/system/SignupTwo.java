@@ -120,7 +120,7 @@ public class SignupTwo extends JFrame implements ActionListener{
         add(NoSeniorCitizen);
         
         ButtonGroup citizenGroup=new ButtonGroup();
-        citizenGroup.add(NoSeniorCitizen);
+        citizenGroup.add(yesSeniorCitizen);
         citizenGroup.add(NoSeniorCitizen);
         
         

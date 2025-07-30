@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 
 public class Withdrawl extends JFrame implements ActionListener{
@@ -59,11 +60,26 @@ JButton withdrawl,back;
             }else{
                 try{
                     Conn conn=new Conn();
+                    ResultSet rs=conn.s.executeQuery("select * from bank where pin='"+pinnumber+"'");
+                    int balance=0;
+                    while(rs.next()){
+                     if(rs.getString("type").equals("Deposit")){
+                        balance+=Integer.parseInt(rs.getString("amount"));
+                        }
+                        else{
+                            balance-=Integer.parseInt(rs.getString("amount"));
+                        }
+                    }
+                
+                    if(ae.getSource()!=back && balance < Integer.parseInt(number)){
+                        JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                    return;
+                    }
+                    JOptionPane.showMessageDialog(null, "Rs "+number+" withdraw Successfully");
                     String query="insert into bank values('"+pinnumber+"','"+date+"','withdrawl','"+number+"')";
                     conn.s.executeUpdate(query);
-                    JOptionPane.showMessageDialog(null, "Rs "+number+" withdraw Successfully");
-                    setVisible(false);
-                    new Transactions(pinnumber).setVisible(true);
+                setVisible(false);
+                new Transactions(pinnumber).setVisible(true);
                 }catch(Exception e){
                     System.out.println(e);
                 }
